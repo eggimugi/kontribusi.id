@@ -31,8 +31,10 @@ export default function Button({
   const baseStyle =
     "px-4 py-2 rounded-xl font-semibold transition-all duration-200 focus:outline-none";
   const variants = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700",
-    secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+    primary:
+      "bg-emerald-600 text-white hover:bg-white hover:border hover:border-emerald-600 hover:text-emerald-600",
+    secondary:
+      "bg-white text-emerald-600 border border-emerald-200 hover:bg-emerald-600 hover:border-none hover:text-white",
   };
 
   return (

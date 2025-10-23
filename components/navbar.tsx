@@ -13,13 +13,13 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
-      <div className="px-4 sm:px-6 lg:px-8 py-2">
+    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div className="px-4 sm:px-6 lg:px-20 py-2">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <Link
             href="/"
-            className="font-bold text-[#30C7A8] flex items-center gap-3"
+            className="font-bold text-emerald-600 flex items-center gap-3"
           >
             <Image
               src="/logo.svg"
@@ -37,9 +37,9 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded px-4 py-2 ${
+                className={`rounded-xl px-4 py-2 ${
                   link.label === "Untuk Volunteer"
-                    ? "bg-[#30C7A8] text-white hover:bg-transparent hover:border hover:border-black hover hover:text-black transition"
+                    ? "bg-emerald-600 text-white hover:bg-transparent hover:border hover:border-black hover hover:text-black transition"
                     : "bg-transparent border border-black text-black hover:bg-[#30C7A8] hover:border-none hover:text-white transition"
                 } transition`}
               >
