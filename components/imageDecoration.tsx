@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface ImageDecorationProps {
   imageSrc: string;
@@ -30,12 +31,12 @@ export const ImageDecoration: React.FC<ImageDecorationProps> = ({
           transform: `rotate(${rotate}deg)`,
         }}
       />
-
       {/* Image Layer */}
       <div className="absolute inset-0" style={{ borderRadius }}>
-        <img
+        <Image
           src={imageSrc}
           alt={imageAlt}
+          fill
           className="w-full h-full object-cover"
           style={{ borderRadius }}
         />
