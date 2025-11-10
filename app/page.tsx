@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Navbar from "@/components/navbar/main-navbar";
 import { ImageDecoration } from "@/components/imageDecoration";
 import Button from "@/components/button";
 import SimpleCard from "@/components/simpleCard";
@@ -21,6 +22,7 @@ export default function Home() {
   ];
   return (
     <main className="min-h-screen bg-emerald-50">
+      <Navbar />
       <section className="flex justify-between w-full gap-12 p-20">
         {/* Kiri */}
         <div className="flex-1 max-w-[50%] py-12">

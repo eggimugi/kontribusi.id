@@ -2,13 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const pathname = usePathname();
 
   const links = [
-    { href: "/", label: "Untuk Volunteer" },
+    { href: "/volunteer", label: "Untuk Volunteer" },
     { href: "/events", label: "Untuk Organizer" },
   ];
 

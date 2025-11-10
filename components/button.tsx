@@ -4,14 +4,16 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ButtonProps {
-  children: React.ReactNode; // teks di dalam tombol
-  href?: string; // jika diisi, tombol akan navigasi ke halaman tersebut
-  onClick?: () => void; // fungsi manual jika butuh aksi custom
-  variant?: "primary" | "secondary" | "light"; // gaya tombol
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+  href?: string;
+  onClick?: () => void;
+  variant?: "primary" | "secondary" | "light" | "transparent" | "gray";
   className?: string;
 }
 
 export default function Button({
+  icon,
   children,
   href,
   onClick,
@@ -22,9 +24,9 @@ export default function Button({
 
   const handleClick = () => {
     if (href) {
-      router.push(href); // navigasi ke halaman tertentu
+      router.push(href); 
     } else if (onClick) {
-      onClick(); // jalankan fungsi manual
+      onClick(); 
     }
   };
 
@@ -37,6 +39,10 @@ export default function Button({
       "bg-white text-emerald-600 border border-emerald-200 hover:bg-emerald-600 hover:border-none hover:text-white",
     light:
       "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 hover:text-emerald-800",
+    transparent:
+      "bg-transparent text-emerald-600 hover:bg-emerald-50 hover:text-emerald-800",
+    gray:
+      "bg-gray-100 text-gray-700 hover:bg-gray-100 hover:text-gray-800",
   };
 
   return (
@@ -44,6 +50,7 @@ export default function Button({
       onClick={handleClick}
       className={`${baseStyle} ${variants[variant]} ${className}`}
     >
+      {icon && <span className="mr-2">{icon}</span>}
       {children}
     </button>
   );
