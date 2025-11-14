@@ -21,7 +21,10 @@ export const ImageDecoration: React.FC<ImageDecorationProps> = ({
   height = "300px",
 }) => {
   return (
-    <div className="relative" style={{ width, height }}>
+    <div
+      className="relative w-full"
+      style={{ width, height, maxHeight: "500px" }}
+    >
       {/* Background Box Layer */}
       <div
         className="absolute inset-0"

@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { Heart } from "lucide-react";
 
 export default function Navbar() {
 
   const links = [
     { href: "/volunteer", label: "Untuk Volunteer" },
-    { href: "/events", label: "Untuk Organizer" },
+    { href: "/organizer", label: "Untuk Organizer" },
   ];
 
   return (
@@ -19,13 +19,9 @@ export default function Navbar() {
             href="/"
             className="font-bold text-emerald-600 flex items-center gap-3"
           >
-            <Image
-              src="/logo.svg"
-              alt="Next.js logo"
-              width={40}
-              height={20}
-              priority
-            />
+            <div className="flex items-center justify-center p-2 bg-emerald-600 rounded-2xl">
+              <Heart size={28} className="text-white" />
+            </div>
             <span>Kontribusi.id</span>
           </Link>
 
@@ -38,7 +34,7 @@ export default function Navbar() {
                 className={`rounded-xl px-4 py-2 ${
                   link.label === "Untuk Volunteer"
                     ? "bg-emerald-600 text-white hover:bg-transparent hover:border hover:border-black hover hover:text-black transition"
-                    : "bg-transparent border border-black text-black hover:bg-[#30C7A8] hover:border-none hover:text-white transition"
+                    : "bg-transparent border border-black text-black hover:bg-emerald-600 hover:border-none hover:text-white transition"
                 } transition`}
               >
                 {link.label}

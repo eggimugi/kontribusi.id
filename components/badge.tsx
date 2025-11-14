@@ -1,17 +1,22 @@
+import { Award } from "lucide-react";
+import clsx from "clsx";
+
 interface BadgeProps {
   text: string;
   color?: "red" | "green" | "blue" | "yellow";
   icon?: React.ReactNode;
   border?: boolean;
   bgColor?: boolean;
+  className?: string;
 }
 
 export default function Badge({
   text,
-  color = "blue",
-  icon,
+  color = "green",
+  icon = <Award size={16} />,
   border = false,
   bgColor = true,
+  className,
 }: BadgeProps) {
   const colorMap: Record<string, { bg: string; text: string; border: string }> =
     {
@@ -21,7 +26,7 @@ export default function Badge({
         border: "border border-red-800",
       },
       green: {
-        bg: "bg-green-100 text-green-800",
+        bg: "bg-emerald-600 text-white",
         text: "text-green-600",
         border: "border border-green-600",
       },
@@ -38,12 +43,14 @@ export default function Badge({
     };
 
   const styles = colorMap[color];
-  const className = `inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-    bgColor ? styles.bg : ""
-  } ${border ? styles.border : ""} ${!bgColor && !border ? styles.text : ""}`;
+  const combinedClassName = clsx(`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium`, {
+    [styles.bg]: bgColor,
+    [styles.border]: border,
+    [styles.text]: !bgColor && !border,
+  }, className);
 
   return (
-    <span className={className}>
+    <span className={combinedClassName}>
       {icon && <span className="mr-2">{icon}</span>}
       {text}
     </span>
