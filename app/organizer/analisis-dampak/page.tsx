@@ -1,7 +1,6 @@
 "use client";
 import OrganizerNavbar from "@/components/navbar/organizer-navbar";
 import ToggleButtonGroup from "@/components/toggleButtonGroup";
-import SimpleCard from "@/components/simpleCard";
 import {
   LayoutDashboard,
   Users,
@@ -16,7 +15,7 @@ export default function RekrutmenPage() {
     <main className="min-h-screen bg-emerald-50">
       <OrganizerNavbar />
 
-      <section className="px-4 sm:px-8 md:px-12 lg:px-20 pt-6 md:pt-10">
+      <section className="px-4 sm:px-8 md:px-12 lg:px-20 py-6 md:py-10">
         <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-teal-700 mb-2">
           Yayasan Laut Bersih
         </h1>
@@ -417,7 +416,7 @@ export default function RekrutmenPage() {
         </div>
 
         {/* Bagikan Dashboard Section */}
-        <div className="mt-6 md:mt-8 mb-6 md:mb-10 bg-emerald-50 border border-emerald-200 rounded-2xl p-4 md:p-6">
+        <div className="mt-6 md:mt-8 bg-emerald-50 border border-emerald-200 rounded-2xl p-4 md:p-6">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div className="flex-1">
               <h3 className="text-base md:text-lg font-semibold text-teal-700 mb-2">

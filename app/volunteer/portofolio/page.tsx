@@ -1,4 +1,11 @@
 "use client";
+
+import { useEffect, useState } from "react";
+import { getCookie } from "@/lib/client-cookies";
+import { get } from "@/lib/api-bridge";
+import { Portfolio, VolunteerOpportunity } from "@/app/types";
+import { BASE_API_URL } from "@/global";
+
 import VolunteerNavbar from "@/components/navbar/volunteer-navbar";
 import ToggleButtonGroup from "@/components/toggleButtonGroup";
 import { ActivityVolunteerCard } from "@/components/activityVolunteerCard";
@@ -16,6 +23,54 @@ import Badge2 from "@/components/badge2";
 import Badge3 from "@/components/badge3";
 
 export default function VolunteerPortofolioPage() {
+  const [portofolio, setPortofolio] = useState<Portfolio[]>([]);
+  const [opportunities, setOpportunities] = useState<VolunteerOpportunity[]>(
+    []
+  );
+
+  const getPortofolio = async () => {
+    try {
+      const url = `${BASE_API_URL}/portofolio`;
+      const TOKEN = getCookie("token") || "";
+      const res = await get(url, TOKEN);
+      setPortofolio(res.data?.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getOpportunity = async () => {
+    try {
+      const url = `${BASE_API_URL}/opportunity`;
+      const TOKEN = getCookie("token") || "";
+      const res = await get(url, TOKEN);
+      setOpportunities(res.data?.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const getUniqueActivityNames = (portfolios: Portfolio[]) => {
+    const names = portfolios.map((p) => p.activityTitle);
+    return Array.from(new Set(names));
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([getPortofolio(), getOpportunity()]);
+    };
+    fetchData();
+  }, []);
+
+  // Compute filtered opportunities as derived state
+  const filteredOpps = (() => {
+    if (portofolio.length > 0 && opportunities.length > 0) {
+      const activityNames = getUniqueActivityNames(portofolio);
+      return opportunities.filter((op) => activityNames.includes(op.title));
+    }
+    return [];
+  })();
+
   return (
     <main className="min-h-screen bg-emerald-50">
       <VolunteerNavbar />
@@ -149,42 +204,17 @@ export default function VolunteerPortofolioPage() {
         <div className="p-4 md:p-8 border border-emerald-200 bg-white rounded-2xl">
           <h3 className="text-lg md:text-xl font-semibold">Riwayat Kegiatan</h3>
           <div className="mt-4 md:mt-6 grid grid-cols-1 gap-4 md:gap-6">
-            {[
-              {
-                id: 1,
-                title: "Program Penanaman Pohon",
-                organization: "GreenAction",
-                date: "15 September 2025",
-                time: "6 jam",
-                badgeTitle: "Eco Warrior",
-              },
-              {
-                id: 2,
-                title: "Bakti Sosial di Panti Asuhan",
-                organization: "Care4Kids",
-                date: "20 Oktober 2025",
-                time: "5 jam",
-                badgeTitle: "Orphan Guardian",
-              },
-              {
-                id: 3,
-                title: "Kampanye Pengurangan Sampah Plastik",
-                organization: "CleanSea",
-                date: "5 November 2025",
-                time: "4 jam",
-                badgeTitle: "Eco Warrior",
-              },
-            ].map((b) => (
+            {portofolio.map((data, index) => (
               <Badge3
-                key={b.id}
+                key={data.id}
                 className="bg-emerald-50 border border-emerald-200"
                 icon={<CheckCircle2 size={28} />}
                 iconClassName="p-4 bg-emerald-600 text-white"
-                title={b.title}
-                organization={b.organization}
-                date={b.date}
-                time={b.time}
-                badgeTitle={b.badgeTitle}
+                title={data.activityTitle}
+                organization={opportunities[index]?.organization?.name}
+                date={opportunities[index]?.startDate.split("T")[0]}
+                time={opportunities[index]?.startDate.split("T")[1]}
+                badgeTitle={data.badge as string}
               />
             ))}
           </div>

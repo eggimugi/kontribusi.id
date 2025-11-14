@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 
 export default function Navbar() {
-
   const links = [
     { href: "/volunteer", label: "Untuk Volunteer" },
     { href: "/organizer", label: "Untuk Organizer" },
@@ -26,7 +25,7 @@ export default function Navbar() {
           </Link>
 
           {/* Menu Links */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex items-center space-x-4">
             {links.map((link) => (
               <Link
                 key={link.href}
@@ -40,15 +39,35 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-          </div>
 
-          {/* Tombol login kecil di mobile */}
-          <div className="md:hidden">
+            {/* Login & Signup Buttons - Desktop */}
             <Link
               href="/login"
-              className="text-sm px-3 py-2 bg-blue-600 text-white rounded-lg"
+              className="px-4 py-2 text-emerald-600 hover:text-emerald-700 font-medium transition"
             >
-              Login
+              Masuk
+            </Link>
+            <Link
+              href="/signup"
+              className="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 font-medium transition"
+            >
+              Daftar
+            </Link>
+          </div>
+
+          {/* Login & Signup Buttons - Mobile */}
+          <div className="md:hidden flex items-center gap-2">
+            <Link
+              href="/login"
+              className="text-xs sm:text-sm px-3 py-2 text-emerald-600 font-medium"
+            >
+              Masuk
+            </Link>
+            <Link
+              href="/signup"
+              className="text-xs sm:text-sm px-3 py-2 bg-emerald-600 text-white rounded-lg font-medium"
+            >
+              Daftar
             </Link>
           </div>
         </div>

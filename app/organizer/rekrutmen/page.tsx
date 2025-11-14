@@ -1,39 +1,71 @@
 "use client";
+
+import { useEffect, useState } from "react";
+import { getCookie } from "@/lib/client-cookies";
+import { get } from "@/lib/api-bridge";
+import { Application } from "@/app/types";
+import { BASE_API_URL } from "@/global";
+import Modal from "@/components/modal";
+
 import OrganizerNavbar from "@/components/navbar/organizer-navbar";
 import ToggleButtonGroup from "@/components/toggleButtonGroup";
 import { LayoutDashboard, Users, TrendingUp, Star } from "lucide-react";
+import EditPortfolio from "./edit";
 
 export default function RekrutmenPage() {
-  const volunteers = [
-    {
-      id: "AS",
-      name: "Ahmad Syarif",
-      kegiatan: "Bersih-Bersih Pantai Ancol",
-      tags: ["Outdoor Activity", "Leadership"],
-      rating: 4.8,
-    },
-    {
-      id: "SN",
-      name: "Siti Nurhaliza",
-      kegiatan: "Bersih-Bersih Pantai Ancol",
-      tags: ["Team Work", "Communication"],
-      rating: 4.9,
-    },
-    {
-      id: "BS",
-      name: "Budi Santoso",
-      kegiatan: "Program Penanaman 1000 Pohon",
-      tags: ["Environmental Care"],
-      rating: 4.7,
-    },
-    {
-      id: "DL",
-      name: "Dewi Lestari",
-      kegiatan: "Program Penanaman 1000 Pohon",
-      tags: ["Coordination", "Planning"],
-      rating: 4.8,
-    },
-  ];
+  const [applicants, setApplicants] = useState<Application[]>([]);
+  const [selectedApplicant, setSelectedApplicant] = useState<Application>();
+  const [isShowEdit, setIsShowEdit] = useState(false);
+
+  const getApplicant = async () => {
+    try {
+      const url = `${BASE_API_URL}/application`;
+      const TOKEN = getCookie("token") || "";
+      const res = await get(url, TOKEN);
+      setApplicants(res.data?.data);
+      console.log("token:", TOKEN);
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchApplicants = async () => {
+      await getApplicant();
+    };
+    fetchApplicants();
+  }, []);
+
+  //   {
+  //     id: "AS",
+  //     name: "Ahmad Syarif",
+  //     kegiatan: "Bersih-Bersih Pantai Ancol",
+  //     tags: ["Outdoor Activity", "Leadership"],
+  //     rating: 4.8,
+  //   },
+  //   {
+  //     id: "SN",
+  //     name: "Siti Nurhaliza",
+  //     kegiatan: "Bersih-Bersih Pantai Ancol",
+  //     tags: ["Team Work", "Communication"],
+  //     rating: 4.9,
+  //   },
+  //   {
+  //     id: "BS",
+  //     name: "Budi Santoso",
+  //     kegiatan: "Program Penanaman 1000 Pohon",
+  //     tags: ["Environmental Care"],
+  //     rating: 4.7,
+  //   },
+  //   {
+  //     id: "DL",
+  //     name: "Dewi Lestari",
+  //     kegiatan: "Program Penanaman 1000 Pohon",
+  //     tags: ["Coordination", "Planning"],
+  //     rating: 4.8,
+  //   },
+  // ];
 
   return (
     <main className="min-h-screen bg-emerald-50">
@@ -44,7 +76,7 @@ export default function RekrutmenPage() {
           Yayasan Laut Bersih
         </h1>
         <p className="text-sm md:text-base text-emerald-600 mb-6 md:mb-8">
-          Dashboard organisasi untuk mengelola rekrutmen volunteer dan mengukur
+          Dashboard organisasi untuk mengelola rekrutmen applicant dan mengukur
           dampak sosial
         </p>
 
@@ -73,16 +105,16 @@ export default function RekrutmenPage() {
           onChange={(id) => console.log("Selected tab:", id)}
         />
 
-        {/* Kelola Rekrutmen Volunteer Banner */}
+        {/* Kelola Rekrutmen applicant Banner */}
         <div className="mt-6 md:mt-10 bg-teal-600 rounded-2xl p-4 md:p-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <div className="flex-1">
               <h2 className="text-lg md:text-xl font-bold text-white mb-2">
-                Kelola Rekrutmen Volunteer
+                Kelola Rekrutmen applicant
               </h2>
               <p className="text-sm md:text-base text-white/90">
                 Lihat pendaftar baru, kelola absensi, dan analisis feedback dari
-                volunteer untuk meningkatkan kualitas kegiatan
+                applicant untuk meningkatkan kualitas kegiatan
               </p>
             </div>
             <button className="flex items-center gap-2 bg-white hover:bg-emerald-50 text-teal-700 px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">
@@ -104,7 +136,7 @@ export default function RekrutmenPage() {
               <thead>
                 <tr className="border-b border-emerald-200">
                   <th className="text-left py-3 px-2 text-xs md:text-sm font-semibold text-teal-700">
-                    Nama Volunteer
+                    Nama applicant
                   </th>
                   <th className="text-left py-3 px-2 text-xs md:text-sm font-semibold text-teal-700">
                     Kegiatan
@@ -121,29 +153,29 @@ export default function RekrutmenPage() {
                 </tr>
               </thead>
               <tbody>
-                {volunteers.map((volunteer) => (
+                {applicants.map((applicant) => (
                   <tr
-                    key={volunteer.name}
+                    key={applicant.volunteer?.user?.name}
                     className="border-b border-emerald-100 hover:bg-emerald-50/50"
                   >
                     <td className="py-4 px-2">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 md:w-10 md:h-10 bg-teal-600 rounded-full flex items-center justify-center text-white text-xs md:text-sm font-semibold shrink-0">
-                          {volunteer.id}
+                          {applicant.id}
                         </div>
                         <span className="text-sm md:text-base text-teal-700 font-medium">
-                          {volunteer.name}
+                          {applicant.volunteer?.user?.name}
                         </span>
                       </div>
                     </td>
                     <td className="py-4 px-2">
                       <span className="text-xs md:text-sm text-emerald-600">
-                        {volunteer.kegiatan}
+                        {applicant.opportunity?.title}
                       </span>
                     </td>
                     <td className="py-4 px-2">
                       <div className="flex flex-wrap gap-1">
-                        {volunteer.tags.map((tag) => (
+                        {applicant?.volunteer?.skills?.map((tag) => (
                           <span
                             key={tag}
                             className="px-2 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-medium"
@@ -154,20 +186,26 @@ export default function RekrutmenPage() {
                       </div>
                     </td>
                     <td className="py-4 px-2">
-                      <div className="flex items-center gap-1">
+                      {/* <div className="flex items-center gap-1">
                         <Star
                           className="text-yellow-500 fill-yellow-500"
                           size={16}
                         />
                         <span className="text-sm md:text-base font-semibold text-teal-700">
-                          {volunteer.rating}
+                          {applicant.rating}
                         </span>
-                      </div>
+                      </div> */}
                     </td>
                     <td className="py-4 px-2">
                       <div className="flex gap-2">
-                        <button className="px-3 md:px-4 py-1.5 md:py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs md:text-sm font-medium transition-colors">
-                          Terima
+                        <button
+                          onClick={() => {
+                            setIsShowEdit(true);
+                            setSelectedApplicant(applicant);
+                          }}
+                          className="px-3 md:px-4 py-1.5 md:py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs md:text-sm font-medium transition-colors"
+                        >
+                          Make Portofolio
                         </button>
                         <button className="px-3 md:px-4 py-1.5 md:py-2 border border-teal-600 text-teal-600 hover:bg-teal-50 rounded-lg text-xs md:text-sm font-medium transition-colors">
                           Detail
@@ -194,7 +232,7 @@ export default function RekrutmenPage() {
                   Kelola Absensi
                 </h3>
                 <p className="text-xs md:text-sm text-emerald-600">
-                  Tracking kehadiran volunteer
+                  Tracking kehadiran applicant
                 </p>
               </div>
             </div>
@@ -265,7 +303,7 @@ export default function RekrutmenPage() {
                   Laporan & Feedback
                 </h3>
                 <p className="text-xs md:text-sm text-emerald-600">
-                  Evaluasi kegiatan volunteer
+                  Evaluasi kegiatan applicant
                 </p>
               </div>
             </div>
@@ -313,6 +351,12 @@ export default function RekrutmenPage() {
           </div>
         </div>
       </section>
+
+      <Modal isShow={isShowEdit} onClose={() => setIsShowEdit(false)}>
+        {selectedApplicant && (
+          <EditPortfolio selectedApplicant={selectedApplicant} />
+        )}
+      </Modal>
     </main>
   );
 }
